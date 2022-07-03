@@ -1,0 +1,9 @@
+{
+  "name": "election",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:occamarazor/election.git",
+  "author": "occamarazor <30173929+occamarazor@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {}
+}
