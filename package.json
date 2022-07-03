@@ -11,6 +11,6 @@
   "author": "occamarazor <30173929+occamarazor@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
-    "@truffle/core": "^5.5.20"
+    "truffle": "^5.5.20"
   }
 }
