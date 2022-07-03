@@ -1,9 +1,19 @@
 {
   "name": "election",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": "git@github.com:occamarazor/election.git",
   "author": "occamarazor <30173929+occamarazor@users.noreply.github.com>",
-  "license": "MIT",
-  "dependencies": {}
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
 }
