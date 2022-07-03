@@ -20,10 +20,10 @@ contract('Election', () => {
   it('initializes candidate 2 with the correct values',
     () => Election.deployed()
                   .then((instance) => instance.candidates(2))
-                  .then((candidateOne) => {
-                    assert.equal(candidateOne.id, 2, 'contains the correct id');
-                    assert.equal(candidateOne.name, 'Candidate 2', 'contains the correct name');
-                    assert.equal(candidateOne.voteCount, 0, 'contains the correct votes count');
+                  .then((candidateTwo) => {
+                    assert.equal(candidateTwo.id, 2, 'contains the correct id');
+                    assert.equal(candidateTwo.name, 'Candidate 2', 'contains the correct name');
+                    assert.equal(candidateTwo.voteCount, 0, 'contains the correct votes count');
                   })
   );
 });
