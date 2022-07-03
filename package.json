@@ -4,6 +4,7 @@
   "description": "",
   "main": "truffle.js",
   "scripts": {
+    "migrate": "truffle migrate --reset",
     "test": "truffle test"
   },
   "repository": "git@github.com:occamarazor/election.git",
