@@ -11,6 +11,13 @@
   "author": "occamarazor <30173929+occamarazor@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-truffle": "^0.3.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
     "truffle": "^5.5.20"
   }
 }
