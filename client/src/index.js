@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import App from './App';
+// import App from './App';
+import Account from './Account';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = createTheme();
@@ -12,7 +13,8 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      {/* <App />*/}
+      <Account />
     </ThemeProvider>
   </React.StrictMode>,
 );
