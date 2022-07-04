@@ -6,16 +6,16 @@ module.exports = {
   // on how to specify configuration options!
   //
   networks: {
-   development: {
-     host: '127.0.0.1',
-     port: 7545,
-     network_id: '*'
-   },
-   test: {
-     host: '127.0.0.1',
-     port: 7545,
-     network_id: '*'
-   }
+    development: {
+      host: '127.0.0.1',
+      port: 7545,
+      network_id: '*'
+    },
+    test: {
+      host: '127.0.0.1',
+      port: 7545,
+      network_id: '*'
+    }
   },
   compilers: {
     solc: {
@@ -34,13 +34,13 @@ module.exports = {
   // $ truffle migrate --reset --compile-all
   //
   // db: {
-    // enabled: false,
-    // host: '127.0.0.1',
-    // adapter: {
-    //   name: 'sqlite',
-    //   settings: {
-    //     directory: '.db'
-    //   }
-    // }
+  // enabled: false,
+  // host: '127.0.0.1',
+  // adapter: {
+  //   name: 'sqlite',
+  //   settings: {
+  //     directory: '.db'
+  //   }
+  // }
   // }
 };
