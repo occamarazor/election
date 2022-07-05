@@ -5,6 +5,7 @@ import { REQUEST_STATUS_TYPES } from '../common/commonConstants';
 import { selectElection } from '../../features/election/electionSelectors';
 import { electionRequestInfo } from '../../features/election/electionSlice';
 import Election from '../election/Election';
+import Template from './Template';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const App = () => {
 
   return (
     <>
+      <Template />
       {electionLoading && <LinearProgress />}
       {electionLoadSuccess && <Election />}
       {electionLoadError && <>Election error: {electionError}</>}
