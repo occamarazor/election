@@ -10,7 +10,7 @@ import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
-const App = () => {
+const AppForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -66,12 +66,12 @@ const App = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href='#' variant='body2'>
+              <Link href='client/src/components/application/AppForm#' variant='body2'>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href='#' variant='body2'>
+              <Link href='client/src/components/application/AppForm#' variant='body2'>
                 {'Dont have an account? Sign Up'}
               </Link>
             </Grid>
@@ -82,4 +82,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default AppForm;
