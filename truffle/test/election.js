@@ -11,18 +11,20 @@ contract('Election', () => {
   it('initializes candidate 1 with the correct values', () =>
     Election.deployed()
       .then((instance) => instance.candidates(1))
-      .then(({ id, name, voteCount }) => {
+      .then(({ id, name, slogan, voteCount }) => {
         assert.equal(id, 1, 'contains the correct id');
-        assert.equal(name, 'Candidate 1', 'contains the correct name');
+        assert.equal(name, 'Franklin', 'contains the correct name');
+        assert.equal(slogan, 'Happy Days Are Here Again', 'contains the correct slogan');
         assert.equal(voteCount, 0, 'contains the correct votes count');
       }));
 
   it('initializes candidate 2 with the correct values', () =>
     Election.deployed()
       .then((instance) => instance.candidates(2))
-      .then(({ id, name, voteCount }) => {
+      .then(({ id, name, slogan, voteCount }) => {
         assert.equal(id, 2, 'contains the correct id');
-        assert.equal(name, 'Candidate 2', 'contains the correct name');
+        assert.equal(name, 'Grant', 'contains the correct name');
+        assert.equal(slogan, 'Let Us Have Peace', 'contains the correct slogan');
         assert.equal(voteCount, 0, 'contains the correct votes count');
       }));
 });

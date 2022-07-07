@@ -4,8 +4,9 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { REQUEST_STATUS_TYPES } from '../common/commonConstants';
 import { selectElection } from '../../features/election/electionSelectors';
 import { electionRequestInfo } from '../../features/election/electionSlice';
-import Election from '../election/Election';
-import Template from './Template';
+import AppHeader from './AppHeader';
+import AppMain from './AppMain';
+import AppSection from './AppSection';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -18,11 +19,18 @@ const App = () => {
     dispatch(electionRequestInfo());
   }, []);
 
+  const app = (
+    <>
+      <AppHeader />
+      <AppMain />
+      <AppSection />
+    </>
+  );
+
   return (
     <>
-      <Template />
       {electionLoading && <LinearProgress />}
-      {electionLoadSuccess && <Election />}
+      {electionLoadSuccess && app}
       {electionLoadError && <>Election error: {electionError}</>}
     </>
   );
