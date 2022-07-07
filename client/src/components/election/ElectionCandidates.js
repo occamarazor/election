@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -13,45 +14,53 @@ const ElectionCandidates = () => {
   const { electionCandidates } = useSelector(selectElection);
 
   return (
-    <Grid container spacing={5} alignItems='flex-end'>
-      {electionCandidates.map(({ id, name, slogan, voteCount }) => (
-        <Grid item key={id} xs={12} sm={6}>
-          <Card>
-            <CardHeader
-              title={'Candidate name'}
-              subheader={name}
-              titleTypographyProps={{ align: 'center' }}
-              subheaderTypographyProps={{ align: 'center' }}
-              sx={{ backgroundColor: (theme) => theme.palette.grey[200] }}
-            />
-            <CardContent>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'baseline',
-                  mb: 2,
-                }}
-              >
-                <Typography component='h2' variant='h3' color='text.primary'>
-                  Votes: {voteCount}
-                </Typography>
-              </Box>
-              <ul>
-                <Typography component='li' variant='subtitle1' align='center'>
-                  {`"${slogan}"`}
-                </Typography>
-              </ul>
-            </CardContent>
-            <CardActions>
-              <Button fullWidth variant='outlined'>
-                Vote
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+    <Container
+      maxWidth='md'
+      sx={{
+        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+        pb: 6,
+      }}
+    >
+      <Grid container spacing={5} alignItems='flex-end'>
+        {electionCandidates.map(({ id, name, slogan, voteCount }) => (
+          <Grid item key={id} xs={12} sm={6}>
+            <Card>
+              <CardHeader
+                title={'Candidate name'}
+                subheader={name}
+                titleTypographyProps={{ align: 'center' }}
+                subheaderTypographyProps={{ align: 'center' }}
+                sx={{ backgroundColor: (theme) => theme.palette.grey[200] }}
+              />
+              <CardContent>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'baseline',
+                    mb: 2,
+                  }}
+                >
+                  <Typography component='h2' variant='h3' color='text.primary'>
+                    Votes: {voteCount}
+                  </Typography>
+                </Box>
+                <ul>
+                  <Typography component='li' variant='subtitle1' align='center'>
+                    {`"${slogan}"`}
+                  </Typography>
+                </ul>
+              </CardContent>
+              <CardActions>
+                <Button fullWidth variant='outlined'>
+                  Vote
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   );
 };
 

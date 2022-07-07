@@ -1,10 +1,10 @@
-import Container from '@mui/material/Container';
-import ElectionMain from '../election/ElectionMain';
+import Box from '@mui/material/Box';
+import ElectionPage from '../election/ElectionPage';
 
 const AppMain = () => (
-  <Container component='main' maxWidth='lg' sx={{ pt: 16, pb: 6 }}>
-    <ElectionMain />
-  </Container>
+  <Box component='main' pt={8}>
+    <ElectionPage />
+  </Box>
 );
 
 export default AppMain;
