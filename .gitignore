@@ -11,7 +11,7 @@ node_modules/
 
 # Production
 build/
-client/public/contracts
+client/src/contracts
 
 # Logs
 logs

@@ -1,7 +1,7 @@
 import { select, call, put, takeLatest, fork } from 'redux-saga/effects';
 // import Web3 from 'web3';
 import Web3 from 'web3/dist/web3.min.js';
-import { ELECTION_GANACHE_URL } from './electionConstants';
+import { ELECTION_GANACHE_URL, ELECTION_GANACHE_NETWORK_ID } from './electionConstants';
 import { selectElection } from './electionSelectors';
 import {
   electionRequestInfo,
@@ -9,7 +9,7 @@ import {
   electionRequestInfoError,
   electionRequestVote,
 } from './electionSlice';
-import { electionRequestInfoApi } from './electionApi';
+import electionContractData from '../../contracts/Election.json';
 import { electionRequestInfoCandidateAdapter } from './electionAdapters';
 
 export function* electionRequestAccountWorker() {
@@ -28,10 +28,8 @@ export function* electionRequestAccountWorker() {
 export function* electionRequestContractWorker() {
   try {
     const web3 = new Web3(Web3.givenProvider || ELECTION_GANACHE_URL);
-    const { data } = yield call(electionRequestInfoApi);
-    const electionAddress = data.networks['5777'].address;
-    const electionAbi = data.abi;
-    const electionContract = new web3.eth.Contract(electionAbi, electionAddress);
+    const electionAddress = electionContractData.networks[ELECTION_GANACHE_NETWORK_ID].address;
+    const electionContract = new web3.eth.Contract(electionContractData.abi, electionAddress);
     return [electionContract, electionAddress];
   } catch ({ message }) {
     console.log('electionRequestContractWorker error:', message);
