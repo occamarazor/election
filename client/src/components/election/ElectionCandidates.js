@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux';
+import { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -9,9 +10,26 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Button from '@mui/material/Button';
 import { selectElection } from '../../features/election/electionSelectors';
+import { electionRequestVote, electionRequestRetract } from '../../features/election/electionSlice';
 
 const ElectionCandidates = () => {
+  const dispatch = useDispatch();
+
   const { electionCandidates } = useSelector(selectElection);
+
+  const handleCandidateVote = useCallback(
+    (candidateId) => () => {
+      dispatch(electionRequestVote(candidateId));
+    },
+    [],
+  );
+
+  const handleCandidateRetract = useCallback(
+    (candidateId) => () => {
+      dispatch(electionRequestRetract(candidateId));
+    },
+    [],
+  );
 
   return (
     <Container
@@ -52,10 +70,20 @@ const ElectionCandidates = () => {
                 </ul>
               </CardContent>
               <CardActions>
-                <Button fullWidth variant='outlined' color='success'>
+                <Button
+                  fullWidth
+                  variant='outlined'
+                  color='success'
+                  onClick={handleCandidateVote(id)}
+                >
                   Vote
                 </Button>
-                <Button fullWidth variant='outlined' color='error'>
+                <Button
+                  fullWidth
+                  variant='outlined'
+                  color='error'
+                  onClick={handleCandidateRetract(id)}
+                >
                   Retract
                 </Button>
               </CardActions>
