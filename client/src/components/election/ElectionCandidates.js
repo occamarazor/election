@@ -52,8 +52,11 @@ const ElectionCandidates = () => {
                 </ul>
               </CardContent>
               <CardActions>
-                <Button fullWidth variant='outlined'>
+                <Button fullWidth variant='outlined' color='success'>
                   Vote
+                </Button>
+                <Button fullWidth variant='outlined' color='error'>
+                  Retract
                 </Button>
               </CardActions>
             </Card>
