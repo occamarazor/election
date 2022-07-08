@@ -6,8 +6,8 @@
   "author": "occamarazor <30173929+occamarazor@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "migrate": "truffle migrate --reset",
-    "test": "truffle test"
+    "test": "truffle test",
+    "migrate": "yarn test && truffle migrate --reset"
   },
   "devDependencies": {
     "eslint": "^8.19.0",
