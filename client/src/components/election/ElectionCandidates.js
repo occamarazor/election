@@ -10,7 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Button from '@mui/material/Button';
 import { selectElection } from '../../features/election/electionSelectors';
-import { electionRequestVote, electionRequestRetract } from '../../features/election/electionSlice';
+import { electionRequestVote } from '../../features/election/electionSlice';
 
 const ElectionCandidates = () => {
   const dispatch = useDispatch();
@@ -20,13 +20,6 @@ const ElectionCandidates = () => {
   const handleCandidateVote = useCallback(
     (candidateId) => () => {
       dispatch(electionRequestVote(candidateId));
-    },
-    [],
-  );
-
-  const handleCandidateRetract = useCallback(
-    (candidateId) => () => {
-      dispatch(electionRequestRetract(candidateId));
     },
     [],
   );
@@ -77,14 +70,6 @@ const ElectionCandidates = () => {
                   onClick={handleCandidateVote(id)}
                 >
                   Vote
-                </Button>
-                <Button
-                  fullWidth
-                  variant='outlined'
-                  color='error'
-                  onClick={handleCandidateRetract(id)}
-                >
-                  Retract
                 </Button>
               </CardActions>
             </Card>

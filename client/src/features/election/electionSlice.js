@@ -6,7 +6,6 @@ const initialState = {
   electionStatus: REQUEST_STATUS_TYPES.INITIAL,
   electionError: '',
   electionAccount: '',
-  electionAbi: [],
   electionAddress: '',
   electionCandidates: [],
 };
@@ -20,10 +19,9 @@ export const electionSlice = createSlice({
     },
     electionRequestInfoSuccess: (
       state,
-      { payload: { electionAccount, electionAbi, electionAddress, electionCandidates } },
+      { payload: { electionAccount, electionAddress, electionCandidates } },
     ) => {
       state.electionAccount = electionAccount;
-      state.electionAbi = electionAbi;
       state.electionAddress = electionAddress;
       state.electionCandidates = electionCandidates;
       state.electionStatus = REQUEST_STATUS_TYPES.SUCCESS;
@@ -32,12 +30,7 @@ export const electionSlice = createSlice({
       state.electionError = payload;
       state.electionStatus = REQUEST_STATUS_TYPES.ERROR;
     },
-    electionRequestVote: (state, { payload }) => {
-      console.log(`Slice: Vote for candidate ${payload}`);
-    },
-    electionRequestRetract: (state, { payload }) => {
-      console.log(`Slice: Retract vote for candidate ${payload}`);
-    },
+    electionRequestVote: () => {},
   },
 });
 
@@ -46,7 +39,6 @@ export const {
   electionRequestInfoSuccess,
   electionRequestInfoError,
   electionRequestVote,
-  electionRequestRetract,
 } = electionSlice.actions;
 
 export default electionSlice.reducer;
