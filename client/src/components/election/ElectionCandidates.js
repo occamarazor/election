@@ -9,19 +9,25 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Button from '@mui/material/Button';
+import { selectUser } from '../../features/user/userSelectors';
 import { selectElection } from '../../features/election/electionSelectors';
 import { electionRequestVote } from '../../features/election/electionSlice';
 
 const ElectionCandidates = () => {
   const dispatch = useDispatch();
-
-  const { electionCandidates } = useSelector(selectElection);
+  const { data: userAccount } = useSelector(selectUser);
+  const { data: candidates } = useSelector(selectElection);
 
   const handleCandidateVote = useCallback(
     (candidateId) => () => {
-      dispatch(electionRequestVote(candidateId));
+      if (userAccount) {
+        dispatch(electionRequestVote(candidateId));
+      } else {
+        // TODO: error notification
+        console.log('Connect wallet!');
+      }
     },
-    [],
+    [dispatch, userAccount],
   );
 
   return (
@@ -33,7 +39,7 @@ const ElectionCandidates = () => {
       }}
     >
       <Grid container spacing={5} alignItems='flex-end'>
-        {electionCandidates.map(({ id, name, slogan, voteCount }) => (
+        {candidates.map(({ id, name, slogan, voteCount }) => (
           <Grid item key={id} xs={12} sm={6}>
             <Card>
               <CardHeader
@@ -66,7 +72,7 @@ const ElectionCandidates = () => {
                 <Button
                   fullWidth
                   variant='outlined'
-                  color='success'
+                  color={userAccount ? 'success' : 'error'}
                   onClick={handleCandidateVote(id)}
                 >
                   Vote

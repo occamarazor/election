@@ -2,11 +2,13 @@
   "env": {
     "es2021": true,
     "browser": true,
+    "node": true,
     "jest": true
   },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:prettier/recommended"
   ],
   "parserOptions": {
@@ -20,10 +22,13 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": 0,
+    "react/jsx-props-no-spreading": "off",
     "camelcase": "error",
     "spaced-comment": "error",
     "quotes": ["error", "single"],
-    "no-duplicate-imports": "error"
+    "no-duplicate-imports": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
   },
   "settings": {
     "import/resolver": {

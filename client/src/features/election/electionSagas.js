@@ -1,89 +1,66 @@
 import { select, call, put, takeLatest, fork } from 'redux-saga/effects';
 // import Web3 from 'web3';
 import Web3 from 'web3/dist/web3.min.js';
-import { ELECTION_GANACHE_URL, ELECTION_GANACHE_NETWORK_ID } from './electionConstants';
-import { selectElection } from './electionSelectors';
+import { GANACHE_URL } from '../../components/common/commonConstants';
+import { selectUser } from '../user/userSelectors';
+import { ELECTION_GANACHE_NETWORK_ID } from './electionConstants';
 import {
-  electionRequestInfo,
-  electionRequestInfoSuccess,
-  electionRequestInfoError,
+  electionRequestCandidates,
+  electionRequestCandidatesSuccess,
+  electionRequestCandidatesError,
   electionRequestVote,
 } from './electionSlice';
 import electionContractData from '../../contracts/Election.json';
-import { electionRequestInfoCandidateAdapter } from './electionAdapters';
+import { electionRequestCandidatesAdapter } from './electionAdapters';
 
-export function* electionRequestAccountWorker() {
+function* electionRequestContractWorker() {
   try {
-    const web3 = new Web3(Web3.givenProvider || ELECTION_GANACHE_URL);
-    const electionAccounts = yield call(web3.eth.requestAccounts);
-    // const electionAccount = yield call(web3.eth.getCoinbase);
-    return electionAccounts[0];
-  } catch ({ message }) {
-    console.log('electionRequestAccountWorker error:', message);
-    yield put(electionRequestInfoError(message));
-    return '';
-  }
-}
-
-export function* electionRequestContractWorker() {
-  try {
-    const web3 = new Web3(Web3.givenProvider || ELECTION_GANACHE_URL);
+    const web3 = new Web3(Web3.givenProvider || GANACHE_URL);
     const electionAddress = electionContractData.networks[ELECTION_GANACHE_NETWORK_ID].address;
-    const electionContract = new web3.eth.Contract(electionContractData.abi, electionAddress);
-    return [electionContract, electionAddress];
+    return new web3.eth.Contract(electionContractData.abi, electionAddress);
   } catch ({ message }) {
+    // TODO: error notification
     console.log('electionRequestContractWorker error:', message);
-    yield put(electionRequestInfoError(message));
-    return [];
+    yield put(electionRequestCandidatesError(message));
+    return null;
   }
 }
 
-export function* electionRequestInfoWorker() {
+function* electionRequestCandidatesWorker() {
   try {
-    // Get user account
-    const electionAccount = yield call(electionRequestAccountWorker);
-    // Get contract instance and contract address
-    const [electionContract, electionAddress] = yield call(electionRequestContractWorker);
-    // Get election candidates
+    const electionContract = yield call(electionRequestContractWorker);
     const candidatesCount = yield call(electionContract.methods.candidatesCount().call);
-    // Filter candidate props
     const electionCandidates = [];
+
     for (let i = 1; i <= candidatesCount; i++) {
       const candidate = yield call(electionContract.methods.candidates(i).call);
-      const electionCandidate = yield call(electionRequestInfoCandidateAdapter, candidate);
+      const electionCandidate = yield call(electionRequestCandidatesAdapter, candidate);
       electionCandidates.push(electionCandidate);
     }
 
-    yield put(
-      electionRequestInfoSuccess({
-        electionAccount,
-        electionAddress,
-        electionCandidates,
-      }),
-    );
+    yield put(electionRequestCandidatesSuccess(electionCandidates));
   } catch ({ message }) {
-    yield put(electionRequestInfoError(message));
-    console.log('electionRequestInfoWorker error:', message);
+    console.log('electionRequestCandidatesWorker error:', message);
+    yield put(electionRequestCandidatesError(message));
   }
 }
 
-function* electionRequestInfoWatcher() {
-  yield takeLatest(electionRequestInfo, electionRequestInfoWorker);
+function* electionRequestCandidatesWatcher() {
+  yield takeLatest(electionRequestCandidates, electionRequestCandidatesWorker);
 }
 
-export function* electionRequestVoteWorker({ payload }) {
+function* electionRequestVoteWorker({ payload }) {
   try {
-    // Get contract address and ABI
-    const [electionContract] = yield call(electionRequestContractWorker);
-    const { electionAccount } = yield select(selectElection);
-    // Trigger vote
+    const { data: userAccount } = yield select(selectUser);
+    const electionContract = yield call(electionRequestContractWorker);
     const receipt = yield call(electionContract.methods.vote(payload).send, {
-      from: electionAccount,
+      from: userAccount,
     });
-    yield call(electionRequestInfoWorker);
+
     console.log(receipt);
+    yield call(electionRequestCandidatesWorker);
   } catch ({ message }) {
-    // yield put(electionRequestVoteError(message));
+    // TODO: error notification
     console.log('electionRequestVoteWorker error:', message);
   }
 }
@@ -92,6 +69,6 @@ function* electionRequestVoteWatcher() {
   yield takeLatest(electionRequestVote, electionRequestVoteWorker);
 }
 
-const electionSagas = [fork(electionRequestInfoWatcher), fork(electionRequestVoteWatcher)];
+const electionSagas = [fork(electionRequestCandidatesWatcher), fork(electionRequestVoteWatcher)];
 
 export default electionSagas;
