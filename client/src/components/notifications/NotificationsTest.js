@@ -9,8 +9,6 @@ const NotificationsTest = () => {
 
   const handleNotificationAdd = useCallback(
     (notification) => () => {
-      console.log('--------------------------------------');
-      console.log('handleNotificationAdd:', notification);
       dispatch(notificationsAdd(notification));
     },
     [dispatch],

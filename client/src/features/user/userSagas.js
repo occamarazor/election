@@ -2,6 +2,8 @@ import { call, put, takeLatest, fork } from 'redux-saga/effects';
 // import Web3 from 'web3';
 // import Web3 from 'web3/dist/web3.min.js';
 // import { GANACHE_URL } from '../../components/common/commonConstants';
+import { NOTIFICATION_TYPES } from '../../components/common/commonConstants';
+import { notificationsAdd } from '../notifications/notificationsSlice';
 import {
   userRequestAccount,
   userRequestAccountSuccess,
@@ -11,9 +13,21 @@ import {
 function* userRequestAccountWorker() {
   try {
     const userAccounts = yield call(window.ethereum.request, { method: 'eth_requestAccounts' });
-    yield put(userRequestAccountSuccess(userAccounts[0]));
+    const userAccount = userAccounts[0];
+    yield put(userRequestAccountSuccess(userAccount));
+    yield put(
+      notificationsAdd({
+        message: `User account: connected to '${userAccount}'`,
+        variant: NOTIFICATION_TYPES.SUCCESS,
+      }),
+    );
   } catch ({ message }) {
-    // TODO: error notification
+    yield put(
+      notificationsAdd({
+        message: 'User account: connect error',
+        variant: NOTIFICATION_TYPES.ERROR,
+      }),
+    );
     yield put(userRequestAccountError(message));
     console.log('userRequestAccountWorker error:', message);
   }

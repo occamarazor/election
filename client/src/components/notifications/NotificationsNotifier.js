@@ -9,7 +9,6 @@ import {
   notificationsRemove,
 } from '../../features/notifications/notificationsSlice';
 
-// TODO: logs
 const NotificationsNotifier = () => {
   const dispatch = useDispatch();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -17,8 +16,6 @@ const NotificationsNotifier = () => {
 
   const handleNotificationClose = useCallback(
     (notificationId) => () => {
-      console.log('----------------------------------');
-      console.log('Notifier onClose:', notificationId);
       closeSnackbar(notificationId);
     },
     [closeSnackbar],
@@ -39,7 +36,6 @@ const NotificationsNotifier = () => {
 
   const handleNotificationRemove = useCallback(
     (event, notificationId) => {
-      console.log('Notifier onExit:', notificationId);
       dispatch(notificationsRemove(notificationId));
     },
     [dispatch],
@@ -48,8 +44,6 @@ const NotificationsNotifier = () => {
   useEffect(() => {
     notifications.forEach(({ id, message, variant, displayed }) => {
       if (!displayed) {
-        console.log('NotificationsNotifier enqueue:', { id, message, variant, displayed });
-
         // TODO: persist
         enqueueSnackbar(message, {
           persist: true,

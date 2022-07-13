@@ -26,7 +26,11 @@ export const userSlice = createSlice({
   },
 });
 
-export const { userRequestAccount, userRequestAccountSuccess, userRequestAccountError } =
-  userSlice.actions;
+export const {
+  userRequestAccount,
+  userRequestAccountSuccess,
+  userRequestAccountError,
+  userResetAccount,
+} = userSlice.actions;
 
 export default userSlice.reducer;
