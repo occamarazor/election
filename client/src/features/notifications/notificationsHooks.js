@@ -3,13 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { selectNotifications } from '../../features/notifications/notificationsSelectors';
-import {
-  notificationsDisplay,
-  notificationsRemove,
-} from '../../features/notifications/notificationsSlice';
+import { selectNotifications } from './notificationsSelectors';
+import { notificationsDisplay, notificationsRemove } from './notificationsSlice';
 
-const NotificationsNotifier = () => {
+export const useNotifications = () => {
   const dispatch = useDispatch();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { data: notifications } = useSelector(selectNotifications);
@@ -57,8 +54,4 @@ const NotificationsNotifier = () => {
       }
     });
   }, [dispatch, notifications, enqueueSnackbar, closeNotificationAction, handleNotificationRemove]);
-
-  return null;
 };
-
-export default NotificationsNotifier;
