@@ -6,3 +6,10 @@ export const REQUEST_STATUS_TYPES = {
 };
 
 export const GANACHE_URL = 'http://localhost:7545';
+
+export const NOTIFICATION_TYPES = {
+  DEFAULT: 'default',
+  SUCCESS: 'success',
+  WARNING: 'warning',
+  ERROR: 'error',
+};

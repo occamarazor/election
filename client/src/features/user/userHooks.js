@@ -7,7 +7,7 @@ import { userRequestAccount, userRequestAccountSuccess } from './userSlice';
 export const useUserOnboarding = () => {
   const dispatch = useDispatch();
   const onboarding = useRef(null);
-  const { userAccount } = useSelector(selectUser);
+  const { data: userAccount } = useSelector(selectUser);
 
   useEffect(() => {
     if (!onboarding.current) {

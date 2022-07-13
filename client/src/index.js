@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { SnackbarProvider } from 'notistack';
 import App from './components/application/App';
 import { store } from './store';
 
@@ -15,9 +16,18 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
-        <CssBaseline />
-        <App />
+        <SnackbarProvider
+          autoHideDuration={10000}
+          maxSnack={5}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
+          <CssBaseline />
+          <App />
+        </SnackbarProvider>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
