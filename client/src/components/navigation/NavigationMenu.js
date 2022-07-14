@@ -6,12 +6,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { selectUser } from '../../features/user/userSelectors';
+import { selectUserData } from '../../features/user/userSelectors';
 import { useUserOnboarding } from '../../features/user/userHooks';
 
 const NavigationMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { data: userAccount } = useSelector(selectUser);
+  const { account: userAccount } = useSelector(selectUserData);
   const handleUserAccountConnect = useUserOnboarding();
 
   const handleMenuOpen = useCallback((event) => {

@@ -3,13 +3,13 @@ import { useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NOTIFICATION_TYPES } from '../../components/common/commonConstants';
 import { notificationsAdd } from '../notifications/notificationsSlice';
-import { selectUser } from './userSelectors';
-import { userRequestAccount, userRequestAccountSuccess } from './userSlice';
+import { selectUserData } from './userSelectors';
+import { userRequestAccount, userReset } from './userSlice';
 
 export const useUserOnboarding = () => {
   const dispatch = useDispatch();
   const onboarding = useRef(null);
-  const { data: userAccount } = useSelector(selectUser);
+  const { account: userAccount } = useSelector(selectUserData);
 
   useEffect(() => {
     if (!onboarding.current) {
@@ -28,15 +28,9 @@ export const useUserOnboarding = () => {
       const handleUserAccountChange = (userAccounts) => {
         const account = userAccounts[0];
         if (account) {
-          dispatch(userRequestAccountSuccess(account));
-          dispatch(
-            notificationsAdd({
-              message: `User account: switched to '${account}'`,
-              variant: NOTIFICATION_TYPES.SUCCESS,
-            }),
-          );
+          dispatch(userRequestAccount());
         } else {
-          dispatch(userRequestAccountSuccess(''));
+          dispatch(userReset());
           dispatch(
             notificationsAdd({
               message: 'User account: disconnected',
@@ -48,7 +42,7 @@ export const useUserOnboarding = () => {
 
       dispatch(userRequestAccount());
       window.ethereum.on('accountsChanged', handleUserAccountChange);
-
+      // TODO: track chain change
       return () => {
         window.ethereum.removeListener('accountsChanged', handleUserAccountChange);
       };

@@ -3,7 +3,8 @@ import { select, call, put, takeLatest, fork } from 'redux-saga/effects';
 import Web3 from 'web3/dist/web3.min.js';
 import { GANACHE_URL, NOTIFICATION_TYPES } from '../../components/common/commonConstants';
 import { notificationsAdd } from '../notifications/notificationsSlice';
-import { selectUser } from '../user/userSelectors';
+import { selectUserData } from '../user/userSelectors';
+import { userRequestVoted } from '../user/userSlice';
 import { ELECTION_GANACHE_NETWORK_ID } from './electionConstants';
 import {
   electionRequestCandidates,
@@ -14,7 +15,7 @@ import {
 import electionContractData from '../../contracts/Election.json';
 import { electionRequestCandidatesAdapter } from './electionAdapters';
 
-function* electionRequestContractWorker() {
+export function* electionRequestContractWorker() {
   try {
     const web3 = new Web3(Web3.givenProvider || GANACHE_URL);
     const electionAddress = electionContractData.networks[ELECTION_GANACHE_NETWORK_ID].address;
@@ -56,9 +57,9 @@ function* electionRequestCandidatesWatcher() {
 
 function* electionRequestVoteWorker({ payload }) {
   try {
-    const { data: userAccount } = yield select(selectUser);
+    const { account: userAccount } = yield select(selectUserData);
     const electionContract = yield call(electionRequestContractWorker);
-    const receipt = yield call(electionContract.methods.vote(payload).send, {
+    yield call(electionContract.methods.vote(payload).send, {
       from: userAccount,
     });
 
@@ -68,8 +69,9 @@ function* electionRequestVoteWorker({ payload }) {
         variant: NOTIFICATION_TYPES.SUCCESS,
       }),
     );
-    yield call(electionRequestCandidatesWorker);
-    console.log('electionRequestVoteWorker success:', receipt);
+    // TODO: create & listen voted event instead?
+    yield put(userRequestVoted());
+    yield put(electionRequestCandidates());
   } catch ({ message }) {
     yield put(
       notificationsAdd({

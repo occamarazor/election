@@ -41,9 +41,7 @@ export const useNotifications = () => {
   useEffect(() => {
     notifications.forEach(({ id, message, variant, displayed }) => {
       if (!displayed) {
-        // TODO: persist
         enqueueSnackbar(message, {
-          persist: true,
           key: id,
           variant,
           action: closeNotificationAction,

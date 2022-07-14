@@ -11,18 +11,25 @@ import CardHeader from '@mui/material/CardHeader';
 import Button from '@mui/material/Button';
 import { NOTIFICATION_TYPES } from '../common/commonConstants';
 import { notificationsAdd } from '../../features/notifications/notificationsSlice';
-import { selectUser } from '../../features/user/userSelectors';
+import { selectUserData } from '../../features/user/userSelectors';
 import { selectElection } from '../../features/election/electionSelectors';
 import { electionRequestVote } from '../../features/election/electionSlice';
 
 const ElectionCandidates = () => {
   const dispatch = useDispatch();
-  const { data: userAccount } = useSelector(selectUser);
+  const { account, voted } = useSelector(selectUserData);
   const { data: candidates } = useSelector(selectElection);
 
   const handleCandidateVote = useCallback(
     (candidateId) => () => {
-      if (userAccount) {
+      if (voted) {
+        dispatch(
+          notificationsAdd({
+            message: 'Election vote: error; user vote submitted',
+            variant: NOTIFICATION_TYPES.ERROR,
+          }),
+        );
+      } else if (account) {
         dispatch(electionRequestVote(candidateId));
       } else {
         dispatch(
@@ -33,7 +40,7 @@ const ElectionCandidates = () => {
         );
       }
     },
-    [dispatch, userAccount],
+    [dispatch, account, voted],
   );
 
   return (
@@ -78,7 +85,7 @@ const ElectionCandidates = () => {
                 <Button
                   fullWidth
                   variant='outlined'
-                  color={userAccount ? 'success' : 'error'}
+                  color={account && !voted ? 'success' : 'error'}
                   onClick={handleCandidateVote(id)}
                 >
                   Vote

@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// TODO: voted
 const initialState = {
-  data: '',
+  data: {
+    account: '',
+    voted: false,
+  },
 };
 
 export const userSlice = createSlice({
@@ -11,11 +13,24 @@ export const userSlice = createSlice({
   reducers: {
     userRequestAccount: () => {},
     userRequestAccountSuccess: (state, { payload }) => {
-      state.data = payload;
+      state.data.account = payload;
+    },
+    userRequestVoted: () => {},
+    userRequestVotedSuccess: (state, { payload }) => {
+      state.data.voted = payload;
+    },
+    userReset: (state) => {
+      state.data = initialState.data;
     },
   },
 });
 
-export const { userRequestAccount, userRequestAccountSuccess } = userSlice.actions;
+export const {
+  userRequestAccount,
+  userRequestAccountSuccess,
+  userRequestVoted,
+  userRequestVotedSuccess,
+  userReset,
+} = userSlice.actions;
 
 export default userSlice.reducer;
