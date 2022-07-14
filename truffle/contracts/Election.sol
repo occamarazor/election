@@ -28,10 +28,10 @@ contract Election {
     }
     // Vote for candidate
     function vote(uint _candidateId) public {
-        require(!voters[msg.sender]);
+        require(!voters[tx.origin]);
         require(_candidateId > 0 && _candidateId <= candidatesCount);
 
-        voters[msg.sender] = true;
+        voters[tx.origin] = true;
         candidates[_candidateId].voteCount++;
     }
 }
