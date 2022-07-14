@@ -32,9 +32,11 @@ contract('Election', (accounts) => {
 
     await electionInstance.vote(candidateId, { from: accountOne });
 
+    const votersCount = await electionInstance.votersCount();
     const voted = await electionInstance.voters(accountOne);
     const { voteCount } = await electionInstance.candidates(candidateId);
 
+    assert.equal(votersCount, 1, 'increments votersCount');
     assert.equal(voted, true, 'voter marked as voted');
     assert.equal(voteCount, 1, "increments candidate's voteCount");
   });
@@ -49,6 +51,9 @@ contract('Election', (accounts) => {
       assert(e.message.includes('revert'), "error message must contain 'revert'");
     }
 
+    const votersCount = await electionInstance.votersCount();
+    assert.equal(votersCount, 1, 'does not increment votersCount');
+
     const candidateOne = await electionInstance.candidates(1);
     assert.equal(candidateOne.voteCount, 1, 'candidate 1 did not receive any votes');
 
@@ -62,9 +67,11 @@ contract('Election', (accounts) => {
 
     await electionInstance.vote(candidateId, { from: accountTwo });
 
+    const votersCount = await electionInstance.votersCount();
     const voted = await electionInstance.voters(accountTwo);
     const { voteCount } = await electionInstance.candidates(candidateId);
 
+    assert.equal(votersCount, 2, 'increments votersCount');
     assert.equal(voted, true, 'voter marked as voted on first vote');
     assert.equal(voteCount, 1, "increments candidate's voteCount on first vote");
 
@@ -72,12 +79,14 @@ contract('Election', (accounts) => {
       await electionInstance.vote(candidateId, { from: accountTwo });
     } catch (e) {
       assert(e.message.includes('revert'), "error message must contain 'revert'");
-
-      const candidateOne = await electionInstance.candidates(1);
-      assert.equal(candidateOne.voteCount, 1, 'candidate 1 did not receive any votes');
-
-      const candidateTwo = await electionInstance.candidates(2);
-      assert.equal(candidateTwo.voteCount, 1, 'candidate 2 did not receive any votes');
     }
+
+    assert.equal(votersCount, 2, 'does not increment votersCount');
+
+    const candidateOne = await electionInstance.candidates(1);
+    assert.equal(candidateOne.voteCount, 1, 'candidate 1 did not receive any votes');
+
+    const candidateTwo = await electionInstance.candidates(2);
+    assert.equal(candidateTwo.voteCount, 1, 'candidate 2 did not receive any votes');
   });
 });

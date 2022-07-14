@@ -10,12 +10,14 @@ contract Election {
         string slogan;
         uint voteCount;
     }
-    // Store voted accounts
-    mapping (address => bool) public voters;
     // Store candidates
     mapping (uint => Candidate) public candidates;
     // Store candidates count
     uint public candidatesCount;
+    // Store voters
+    mapping (address => bool) public voters;
+    // Store voters count
+    uint public votersCount;
     // Constructor
     constructor() {
         addCandidate("Franklin", "Happy Days Are Here Again");
@@ -31,6 +33,7 @@ contract Election {
         require(!voters[msg.sender]);
         require(_candidateId > 0 && _candidateId <= candidatesCount);
 
+        votersCount++;
         voters[msg.sender] = true;
         candidates[_candidateId].voteCount++;
     }
