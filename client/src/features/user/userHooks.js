@@ -28,15 +28,13 @@ export const useUserOnboarding = () => {
       const handleUserAccountChange = (userAccounts) => {
         const account = userAccounts[0];
         if (account) {
-          if (userAccount) {
-            dispatch(userRequestAccountSuccess(account));
-            dispatch(
-              notificationsAdd({
-                message: `User account: switched to '${account}'`,
-                variant: NOTIFICATION_TYPES.SUCCESS,
-              }),
-            );
-          }
+          dispatch(userRequestAccountSuccess(account));
+          dispatch(
+            notificationsAdd({
+              message: `User account: switched to '${account}'`,
+              variant: NOTIFICATION_TYPES.SUCCESS,
+            }),
+          );
         } else {
           dispatch(userRequestAccountSuccess(''));
           dispatch(
@@ -48,13 +46,14 @@ export const useUserOnboarding = () => {
         }
       };
 
+      dispatch(userRequestAccount());
       window.ethereum.on('accountsChanged', handleUserAccountChange);
 
       return () => {
         window.ethereum.removeListener('accountsChanged', handleUserAccountChange);
       };
     }
-  }, [dispatch, userAccount]);
+  }, [dispatch]);
 
   return useCallback(() => {
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {

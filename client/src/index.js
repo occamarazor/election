@@ -18,10 +18,9 @@ root.render(
       <ThemeProvider theme={theme}>
         <SnackbarProvider
           autoHideDuration={10000}
-          maxSnack={5}
           anchorOrigin={{
             vertical: 'top',
-            horizontal: 'right',
+            horizontal: 'center',
           }}
         >
           <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />

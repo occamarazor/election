@@ -9,6 +9,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Button from '@mui/material/Button';
+import { NOTIFICATION_TYPES } from '../common/commonConstants';
+import { notificationsAdd } from '../../features/notifications/notificationsSlice';
 import { selectUser } from '../../features/user/userSelectors';
 import { selectElection } from '../../features/election/electionSelectors';
 import { electionRequestVote } from '../../features/election/electionSlice';
@@ -23,8 +25,12 @@ const ElectionCandidates = () => {
       if (userAccount) {
         dispatch(electionRequestVote(candidateId));
       } else {
-        // TODO: error notification
-        console.log('Connect wallet!');
+        dispatch(
+          notificationsAdd({
+            message: 'Election vote: error; please connect',
+            variant: NOTIFICATION_TYPES.ERROR,
+          }),
+        );
       }
     },
     [dispatch, userAccount],

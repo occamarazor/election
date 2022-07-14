@@ -1,7 +1,8 @@
 import { select, call, put, takeLatest, fork } from 'redux-saga/effects';
 // import Web3 from 'web3';
 import Web3 from 'web3/dist/web3.min.js';
-import { GANACHE_URL } from '../../components/common/commonConstants';
+import { GANACHE_URL, NOTIFICATION_TYPES } from '../../components/common/commonConstants';
+import { notificationsAdd } from '../notifications/notificationsSlice';
 import { selectUser } from '../user/userSelectors';
 import { ELECTION_GANACHE_NETWORK_ID } from './electionConstants';
 import {
@@ -19,9 +20,13 @@ function* electionRequestContractWorker() {
     const electionAddress = electionContractData.networks[ELECTION_GANACHE_NETWORK_ID].address;
     return new web3.eth.Contract(electionContractData.abi, electionAddress);
   } catch ({ message }) {
-    // TODO: error notification
+    yield put(
+      notificationsAdd({
+        message: 'Election contract: error',
+        variant: NOTIFICATION_TYPES.ERROR,
+      }),
+    );
     console.log('electionRequestContractWorker error:', message);
-    yield put(electionRequestCandidatesError(message));
     return null;
   }
 }
@@ -40,8 +45,8 @@ function* electionRequestCandidatesWorker() {
 
     yield put(electionRequestCandidatesSuccess(electionCandidates));
   } catch ({ message }) {
-    console.log('electionRequestCandidatesWorker error:', message);
     yield put(electionRequestCandidatesError(message));
+    console.log('electionRequestCandidatesWorker error:', message);
   }
 }
 
@@ -57,10 +62,21 @@ function* electionRequestVoteWorker({ payload }) {
       from: userAccount,
     });
 
-    console.log(receipt);
+    yield put(
+      notificationsAdd({
+        message: 'Election vote: submitted',
+        variant: NOTIFICATION_TYPES.SUCCESS,
+      }),
+    );
     yield call(electionRequestCandidatesWorker);
+    console.log('electionRequestVoteWorker success:', receipt);
   } catch ({ message }) {
-    // TODO: error notification
+    yield put(
+      notificationsAdd({
+        message: 'Election vote: error',
+        variant: NOTIFICATION_TYPES.ERROR,
+      }),
+    );
     console.log('electionRequestVoteWorker error:', message);
   }
 }

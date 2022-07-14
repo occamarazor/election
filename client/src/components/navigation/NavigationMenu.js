@@ -54,7 +54,7 @@ const NavigationMenu = () => {
     </>
   ) : (
     <Button href='#' variant='outlined' sx={{ my: 1, mx: 1.5 }} onClick={handleUserAccountConnect}>
-      {MetaMaskOnboarding.isMetaMaskInstalled() ? 'connect wallet' : 'install wallet'}
+      {MetaMaskOnboarding.isMetaMaskInstalled() ? 'connect' : 'install'}
     </Button>
   );
 };
